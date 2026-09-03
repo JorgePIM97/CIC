@@ -1,0 +1,35 @@
+{
+  "vendedores_force": [
+    "ADAN GARZA MARTINEZ",
+    "ALFONSO GASCA OROZCO",
+    "CESAR VALDES ZUÑIGA",
+    "JORGE MARTINEZ ALANIS",
+    "Javier Ibarrola",
+    "Luis Navarro"
+  ],
+  "vendedores_exceles": [
+    "Adan Garza",
+    "Alfonso Gasca",
+    "Cesar Valdes",
+    "Javier Ibarrola",
+    "Jorge Martinez",
+    "Luis Navarro Poac"
+  ],
+  "vendedores_norte_exceles": [
+    "Jorge Martinez",
+    "Adan Garza"
+  ],
+  "vendedores_bajio_exceles": [
+    "Alfonso Gasca",
+    "Cesar Valdes"
+  ],
+  "vendedores_norte_force": [
+    "JORGE MARTINEZ ALANIS",
+    "ADAN GARZA MARTINEZ"
+  ],
+  "vendedores_bajio_force": [
+    "ALFONSO GASCA OROZCO",
+    "CESAR VALDES ZUÑIGA",
+    "Javier Ibarrola"
+  ]
+}
