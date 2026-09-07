@@ -1292,7 +1292,7 @@ class ExcelesModelo:
         titulo_style = ParagraphStyle(
             'CustomTitle', parent=styles['Heading1'],
             fontSize=11, textColor=colors.HexColor('#000000'),
-            spaceAfter=6, alignment=TA_CENTER
+            spaceAfter=1, alignment=TA_CENTER
         )
         fecha_hoy = datetime.now().strftime("%d/%m/%Y")
 
@@ -1300,6 +1300,9 @@ class ExcelesModelo:
             #f"Reporte de Ventas: &nbsp; {vendedor} - {mes_nombre} {año} &nbsp;&nbsp; Reporte generado el día: {fecha_hoy}",
             #titulo_style
         #))
+
+        # Baja visualmente el título
+        story.append(Spacer(0, 5))
 
         story.append(Paragraph(
             f"SEGUIMIENTO ESTRATÉGICO DE PERSONAL COMERCIAL &nbsp; {vendedor} - {mes_nombre} {año}",
@@ -1612,12 +1615,16 @@ class ExcelesModelo:
             fontSize=12, textColor=colors.HexColor("#000000"),
             spaceAfter=6, alignment=TA_LEFT
         )
+
         fecha_hoy = datetime.now().strftime("%d/%m/%Y")
+
+        story.append(Spacer(0, 6))
+
         story.append(Paragraph(
             f"Resumen de Actividades: &nbsp; {vendedor} - {mes_nombre} {año} &nbsp;&nbsp; Resumen generado el día: {fecha_hoy}",
             titulo_movilidad_style
         ))
-        story.append(Spacer(0, 6))
+        
 
         if df_movilidad is not None and not df_movilidad.empty:
             header_mov_style = ParagraphStyle('HeaderMov', fontSize=8, fontName='Helvetica-Bold', textColor=colors.white, alignment=TA_CENTER)
@@ -1859,9 +1866,9 @@ class ExcelesModelo:
             try:
                 canvas.drawImage(
                     encabezado_gris_path,
-                    20,
+                    15,
                     PAGE[1] - alto_encabezado_gris,
-                    width=ancho_imagen*0.95,
+                    width=ancho_imagen*0.96,
                     height=alto_encabezado_gris,
                     preserveAspectRatio=True,
                     mask='auto'
@@ -1877,9 +1884,9 @@ class ExcelesModelo:
             try:
                 canvas.drawImage(
                     encabezado_rojo_path,
-                    20,
+                    140,
                     PAGE[1] - alto_encabezado_gris - alto_encabezado_rojo,
-                    width=ancho_imagen*0.95,
+                    width=ancho_imagen*0.80,
                     height=alto_encabezado_rojo,
                     preserveAspectRatio=False,
                     mask='auto'
@@ -1899,9 +1906,9 @@ class ExcelesModelo:
             try:
                 canvas.drawImage(
                     pie_rojo_path,
-                    20,
+                    15,
                     y_pie,
-                    width=ancho_imagen*0.95,
+                    width=ancho_imagen*0.96,
                     height=alto_pie_rojo,
                     preserveAspectRatio=False,
                     mask='auto'
@@ -1921,7 +1928,7 @@ class ExcelesModelo:
             canvas.setFont("Helvetica", 6.5)
 
             # Posición horizontal
-            x_info = PAGE[0] - 2.55 * inch
+            x_info = PAGE[0] - 2 * inch
 
             # Posición inferior
             y_info = 0.16 * inch
@@ -1931,19 +1938,19 @@ class ExcelesModelo:
             canvas.drawString(
                 x_info,
                 y_info + separacion * 3,
-                "Código: FO-XX-XX-XX"
+                os.getenv("CODIGO_NORMA")
             )
 
             canvas.drawString(
                 x_info,
                 y_info + separacion * 2,
-                "Revisión: 4.0"
+                os.getenv("REVISION_NORMA")
             )
 
             canvas.drawString(
                 x_info,
                 y_info + separacion,
-                "Fecha de aplicación: 17 de agosto 2026"
+                os.getenv("FECHA_APLICACION_NORMA")
             )
 
             canvas.drawString(
@@ -1971,23 +1978,23 @@ class ExcelesModelo:
                 except Exception as e:
                     print("Error al insertar logotipo:", e)
 
-            try:
-                canvas.setFillAlpha(0.15)
+            # try:
+            #     canvas.setFillAlpha(0.15)
 
-                canvas.drawImage(
-                    logo_path,
-                    PAGE[0] - 1.6*inch,
-                    PAGE[1] - 1.4*inch,
-                    width=100,
-                    height=80,
-                    preserveAspectRatio=True,
-                    mask='auto'
-                )
+            #     canvas.drawImage(
+            #         logo_path,
+            #         PAGE[0] - 1.6*inch,
+            #         PAGE[1] - 1.4*inch,
+            #         width=100,
+            #         height=80,
+            #         preserveAspectRatio=True,
+            #         mask='auto'
+            #     )
 
-                canvas.setFillAlpha(1)
+            #     canvas.setFillAlpha(1)
 
-            except Exception as e:
-                print("Error al insertar marca de agua:", e)
+            # except Exception as e:
+            #     print("Error al insertar marca de agua:", e)
 
             canvas.restoreState()
         
