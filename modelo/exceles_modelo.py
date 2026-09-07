@@ -1261,7 +1261,9 @@ class ExcelesModelo:
             print(f"Error al generar gráfica pastel actividad tipo cliente: {e}")
             return None
 
-
+    #############################################################################################
+    #                                    GENERAR REPORTE
+    #############################################################################################
     def generar_pdf_reporte(
         self, vendedor, mes_nombre, año, df_datos, meta,
         df_clases=None, df_metas=None,
