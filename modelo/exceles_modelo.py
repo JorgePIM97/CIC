@@ -1296,8 +1296,13 @@ class ExcelesModelo:
         )
         fecha_hoy = datetime.now().strftime("%d/%m/%Y")
 
+        #story.append(Paragraph(
+            #f"Reporte de Ventas: &nbsp; {vendedor} - {mes_nombre} {año} &nbsp;&nbsp; Reporte generado el día: {fecha_hoy}",
+            #titulo_style
+        #))
+
         story.append(Paragraph(
-            f"Reporte de Ventas: &nbsp; {vendedor} - {mes_nombre} {año} &nbsp;&nbsp; Reporte generado el día: {fecha_hoy}",
+            f"SEGUIMIENTO ESTRATÉGICO DE PERSONAL COMERCIAL",
             titulo_style
         ))
 
@@ -1824,29 +1829,177 @@ class ExcelesModelo:
         # --------------------------------------------------
         def agregar_borde(canvas, doc):
             canvas.saveState()
-            canvas.setStrokeColor(colors.HexColor("#911218"))
-            canvas.setLineWidth(3)
-            canvas.rect(0.15*inch, 0.15*inch, PAGE[0] - 0.3*inch, PAGE[1] - 0.3*inch)
 
-            # logo_path = r"C:\CIC_WebApp\vista\images\logo_GPA.png"
+            # --------------------------------------------------
+            # Rutas de imágenes para encabezado y pie
+            # --------------------------------------------------
+            encabezado_gris_path = (
+                r"C:\Users\E-GPA-L_01\Documents\Produccion\Reportes"
+                r"\Margenes\encabezado_gris.png"
+            )
+
+            encabezado_rojo_path = (
+                r"C:\Users\E-GPA-L_01\Documents\Produccion\Reportes"
+                r"\Margenes\encabezado_rojo.png"
+            )
+
+            pie_rojo_path = (
+                r"C:\Users\E-GPA-L_01\Documents\Produccion\Reportes"
+                r"\Margenes\pie_rojo.png"
+            )
+
+            # --------------------------------------------------
+            # MEDIDAS
+            # --------------------------------------------------
+
+            # Ancho completo de la página
+            ancho_imagen = PAGE[0]
+
+            # Alturas visuales.
+            # Puedes modificarlas después según el diseño real de los PNG.
+            alto_encabezado_gris = 0.40 * inch
+            alto_encabezado_rojo = 0.32 * inch
+            alto_pie_rojo = 0.32 * inch
+
+            # --------------------------------------------------
+            # ENCABEZADO GRIS
+            # Parte superior de la página
+            # --------------------------------------------------
+            try:
+                canvas.drawImage(
+                    encabezado_gris_path,
+                    0,
+                    PAGE[1] - alto_encabezado_gris,
+                    width=ancho_imagen,
+                    height=alto_encabezado_gris,
+                    preserveAspectRatio=True,
+                    mask='auto'
+                )
+
+            except Exception as e:
+                print("Error al insertar encabezado gris:", e)
+
+            # --------------------------------------------------
+            # ENCABEZADO ROJO
+            # Inmediatamente debajo del encabezado gris
+            # --------------------------------------------------
+            try:
+                canvas.drawImage(
+                    encabezado_rojo_path,
+                    0,
+                    PAGE[1] - alto_encabezado_gris - alto_encabezado_rojo,
+                    width=ancho_imagen,
+                    height=alto_encabezado_rojo,
+                    preserveAspectRatio=False,
+                    mask='auto'
+                )
+
+            except Exception as e:
+                print("Error al insertar encabezado rojo:", e)
+
+            # --------------------------------------------------
+            # PIE ROJO
+            # --------------------------------------------------
+
+            # Dejamos espacio debajo para la información
+            # de control del documento.
+            y_pie = 0.72 * inch
+
+            try:
+                canvas.drawImage(
+                    pie_rojo_path,
+                    0,
+                    y_pie,
+                    width=ancho_imagen,
+                    height=alto_pie_rojo,
+                    preserveAspectRatio=False,
+                    mask='auto'
+                )
+
+            except Exception as e:
+                print("Error al insertar pie rojo:", e)
+
+            # --------------------------------------------------
+            # Información de control del documento
+            # Debajo del pie rojo, lado inferior derecho
+            # --------------------------------------------------
+            numero_pagina = canvas.getPageNumber()
+            total_paginas = 2
+
+            canvas.setFillColor(colors.HexColor("#000000"))
+            canvas.setFont("Helvetica", 6.5)
+
+            # Posición horizontal
+            x_info = PAGE[0] - 2.55 * inch
+
+            # Posición inferior
+            y_info = 0.16 * inch
+
+            separacion = 0.13 * inch
+
+            canvas.drawString(
+                x_info,
+                y_info + separacion * 3,
+                "Código: FO-XX-XX-XX"
+            )
+
+            canvas.drawString(
+                x_info,
+                y_info + separacion * 2,
+                "Revisión: 4.0"
+            )
+
+            canvas.drawString(
+                x_info,
+                y_info + separacion,
+                "Fecha de aplicación: 17 de agosto 2026"
+            )
+
+            canvas.drawString(
+                x_info,
+                y_info,
+                f"Página: {numero_pagina} de {total_paginas}"
+            )
+
+            # --------------------------------------------------
+            # LOGOTIPO / MARCA DE AGUA
+            # --------------------------------------------------
             logo_path = os.getenv("LOGO_PDF")
 
             if canvas.getPageNumber() == 1:
                 try:
-                    canvas.drawImage(logo_path, 0.5*inch, PAGE[1] - 1.8*inch,
-                                    width=120, height=95, preserveAspectRatio=True, mask='auto')
+                    canvas.drawImage(
+                        logo_path,
+                        0.5*inch,
+                        PAGE[1] - 1.8*inch,
+                        width=120,
+                        height=95,
+                        preserveAspectRatio=True,
+                        mask='auto'
+                    )
                 except Exception as e:
                     print("Error al insertar logotipo:", e)
 
             try:
                 canvas.setFillAlpha(0.15)
-                canvas.drawImage(logo_path, PAGE[0] - 1.6*inch, PAGE[1] - 1.4*inch,
-                                width=100, height=80, preserveAspectRatio=True, mask='auto')
+
+                canvas.drawImage(
+                    logo_path,
+                    PAGE[0] - 1.6*inch,
+                    PAGE[1] - 1.4*inch,
+                    width=100,
+                    height=80,
+                    preserveAspectRatio=True,
+                    mask='auto'
+                )
+
                 canvas.setFillAlpha(1)
+
             except Exception as e:
                 print("Error al insertar marca de agua:", e)
 
             canvas.restoreState()
+        
 
         doc.build(story, onFirstPage=agregar_borde, onLaterPages=agregar_borde)
         buffer.seek(0)
