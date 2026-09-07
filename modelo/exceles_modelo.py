@@ -1302,7 +1302,7 @@ class ExcelesModelo:
         #))
 
         story.append(Paragraph(
-            f"SEGUIMIENTO ESTRATÉGICO DE PERSONAL COMERCIAL",
+            f"SEGUIMIENTO ESTRATÉGICO DE PERSONAL COMERCIAL &nbsp; {vendedor} - {mes_nombre} {año}",
             titulo_style
         ))
 
@@ -1781,7 +1781,7 @@ class ExcelesModelo:
         ]))
         story.append(tabla_fila_h2)
 
-        story.append(Spacer(0, 60))
+        story.append(Spacer(0, 40))
 
         # --------------------------------------------------
         # 7. Firmas
@@ -1833,20 +1833,11 @@ class ExcelesModelo:
             # --------------------------------------------------
             # Rutas de imágenes para encabezado y pie
             # --------------------------------------------------
-            encabezado_gris_path = (
-                r"C:\Users\E-GPA-L_01\Documents\Produccion\Reportes"
-                r"\Margenes\encabezado_gris.png"
-            )
+            encabezado_gris_path = os.getenv("ENCABEZADO_GRIS")
 
-            encabezado_rojo_path = (
-                r"C:\Users\E-GPA-L_01\Documents\Produccion\Reportes"
-                r"\Margenes\encabezado_rojo.png"
-            )
+            encabezado_rojo_path = os.getenv("ENCABEZADO_ROJO")
 
-            pie_rojo_path = (
-                r"C:\Users\E-GPA-L_01\Documents\Produccion\Reportes"
-                r"\Margenes\pie_rojo.png"
-            )
+            pie_rojo_path = os.getenv("PIE_ROJO")
 
             # --------------------------------------------------
             # MEDIDAS
@@ -1868,9 +1859,9 @@ class ExcelesModelo:
             try:
                 canvas.drawImage(
                     encabezado_gris_path,
-                    0,
+                    20,
                     PAGE[1] - alto_encabezado_gris,
-                    width=ancho_imagen,
+                    width=ancho_imagen*0.95,
                     height=alto_encabezado_gris,
                     preserveAspectRatio=True,
                     mask='auto'
@@ -1886,9 +1877,9 @@ class ExcelesModelo:
             try:
                 canvas.drawImage(
                     encabezado_rojo_path,
-                    0,
+                    20,
                     PAGE[1] - alto_encabezado_gris - alto_encabezado_rojo,
-                    width=ancho_imagen,
+                    width=ancho_imagen*0.95,
                     height=alto_encabezado_rojo,
                     preserveAspectRatio=False,
                     mask='auto'
@@ -1898,7 +1889,7 @@ class ExcelesModelo:
                 print("Error al insertar encabezado rojo:", e)
 
             # --------------------------------------------------
-            # PIE ROJO
+            # PIE ROJO                                                            
             # --------------------------------------------------
 
             # Dejamos espacio debajo para la información
@@ -1908,9 +1899,9 @@ class ExcelesModelo:
             try:
                 canvas.drawImage(
                     pie_rojo_path,
-                    0,
+                    20,
                     y_pie,
-                    width=ancho_imagen,
+                    width=ancho_imagen*0.95,
                     height=alto_pie_rojo,
                     preserveAspectRatio=False,
                     mask='auto'
