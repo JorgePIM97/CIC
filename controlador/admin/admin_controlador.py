@@ -134,8 +134,15 @@ class AdminControlador(BaseVista):
         # ================================================================ #
         #  TAB por región                                                  #
         # ================================================================ #
-        tab_general, tab_norte, tab_bajio = st.tabs(["🌎 General", "🧭 Norte", "🌵 Bajío"])
-
+        # tab_general, tab_norte, tab_bajio = st.tabs(["🌎 General", "🧭 Norte", "🌵 Bajío"])
+        tab_general, tab_norte, tab_bajio, tab_fotos = st.tabs(
+            [
+                "🌎 General",
+                "🧭 Norte",
+                "🌵 Bajío",
+                "📷 Fotografías",
+            ]
+        )
         # ================================================================ #
         #  TAB GENERAL                                                    #
         # ================================================================ #
@@ -219,3 +226,143 @@ class AdminControlador(BaseVista):
                 fn_eliminar_force=self.admin_modelo.eliminar_vendedor_bajio_force,
                 fn_eliminar_excel=self.admin_modelo.eliminar_vendedor_bajio_excel,
             )
+
+        # ================================================================ #
+        #  TAB FOTOGRAFÍAS                                                 #
+        # ================================================================ #
+
+        with tab_fotos:
+
+            st.subheader("📷 Fotografías de vendedores")
+
+            st.caption(
+                "Administra las fotografías utilizadas en los reportes PDF."
+            )
+
+            # ------------------------------------------------------------ #
+            # Vendedores disponibles
+            # ------------------------------------------------------------ #
+
+            vendedores = guardados.get("vendedores_exceles", [])
+
+            if not vendedores:
+                st.info(
+                    "No hay vendedores registrados. "
+                    "Primero debes dar de alta vendedores en la pestaña General."
+                )
+
+            else:
+
+                vendedor_foto = st.selectbox(
+                    "Selecciona un vendedor",
+                    options=["— Selecciona —"] + vendedores,
+                    key="foto_vendedor"
+                )
+
+                if vendedor_foto != "— Selecciona —":
+
+                    st.divider()
+
+                    # ---------------------------------------------------- #
+                    # Fotografía actualmente registrada
+                    # ---------------------------------------------------- #
+
+                    foto_actual = self.admin_modelo.obtener_foto_vendedor(
+                        vendedor_foto
+                    )
+
+                    if foto_actual:
+
+                        st.markdown("**Fotografía actual**")
+
+                        st.image(
+                            foto_actual,
+                            width=150
+                        )
+
+                    else:
+
+                        st.info(
+                            f"'{vendedor_foto}' todavía no tiene "
+                            "una fotografía registrada."
+                        )
+
+                    st.divider()
+
+                    # ---------------------------------------------------- #
+                    # Subir nueva fotografía
+                    # ---------------------------------------------------- #
+
+                    st.markdown("**Subir fotografía**")
+
+                    archivo = st.file_uploader(
+                        "Selecciona una imagen",
+                        type=["jpg", "jpeg", "png"],
+                        key=f"upload_foto_{vendedor_foto}"
+                    )
+
+                    if archivo is not None:
+
+                        st.markdown("**Vista previa**")
+
+                        st.image(
+                            archivo,
+                            width=150
+                        )
+
+                        if st.button(
+                            "💾 Guardar fotografía",
+                            key=f"guardar_foto_{vendedor_foto}",
+                            use_container_width=True
+                        ):
+
+                            guardada = self.admin_modelo.guardar_foto_vendedor(
+                                vendedor=vendedor_foto,
+                                nombre_archivo=archivo.name,
+                                contenido=archivo.getvalue()
+                            )
+
+                            if guardada:
+
+                                st.success(
+                                    f"Fotografía de '{vendedor_foto}' "
+                                    "guardada correctamente."
+                                )
+
+                                st.rerun()
+
+                    # ---------------------------------------------------- #
+                    # Eliminar fotografía
+                    # ---------------------------------------------------- #
+
+                    if foto_actual:
+
+                        st.divider()
+
+                        with st.expander("⛔ Eliminar fotografía"):
+
+                            st.warning(
+                                "La fotografía dejará de estar disponible "
+                                "para los reportes PDF."
+                            )
+
+                            if st.button(
+                                "Eliminar fotografía",
+                                key=f"eliminar_foto_{vendedor_foto}",
+                                use_container_width=True
+                            ):
+
+                                eliminada = (
+                                    self.admin_modelo.eliminar_foto_vendedor(
+                                        vendedor_foto
+                                    )
+                                )
+
+                                if eliminada:
+
+                                    st.success(
+                                        f"Fotografía de '{vendedor_foto}' "
+                                        "eliminada correctamente."
+                                    )
+
+                                    st.rerun()

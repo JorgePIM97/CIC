@@ -267,3 +267,48 @@ Aún no se cuenta con evidencia suficiente para establecer con precisión:
 - cambios relevantes realizados antes del 2 de septiembre de 2026.
 
 Estos datos podrán incorporarse posteriormente cuando exista evidencia o puedan ser confirmados por el desarrollador.
+
+---
+
+## 10. Hito — Administración de fotografías e integración con reportes PDF
+
+**Fecha:** 06/10/2026  
+**Estado:** Implementado y validado.
+
+Se incorporó la administración de fotografías de vendedores como extensión del módulo administrativo de CIC v1.
+
+La implementación mantiene una sola fotografía por persona. Aunque CIC conserva listas de vendedores provenientes de Force Manager y Netsuite, ambas representan a los mismos vendedores; la fotografía se administra de forma independiente a la fuente de datos.
+
+Cambios realizados:
+
+- se agregó `fotos_vendedores` a `vendedores_activos.json`;
+- `_leer_json()` se hizo retrocompatible para incorporar nuevas claves de configuración sin eliminar datos existentes;
+- se incorporaron métodos para guardar/reemplazar, consultar y eliminar fotografías desde `AdminModelo`;
+- se agregó la pestaña `📷 Fotografías` al módulo **Administrar Vendedores**;
+- las imágenes se almacenan físicamente en la ruta definida por `FOTOS_VENDEDORES`;
+- `ExcelesModelo` instancia `AdminModelo()` para consultar la fotografía correspondiente al vendedor;
+- `generar_pdf_reporte()` obtiene la ruta mediante `obtener_foto_vendedor(vendedor)`;
+- la fotografía se dibuja directamente con `canvas.drawImage()` en la primera página del PDF, sin modificar los márgenes ni el contenido de las tablas.
+
+Durante la prueba inicial se detectó un error `Permission denied` al escribir en la carpeta configurada para fotografías. La causa fue la falta de permisos de escritura/modificación del usuario de Windows que ejecutaba CIC. Después de ajustar los permisos de la carpeta, la carga de fotografías funcionó correctamente.
+
+La prueba final consistió en registrar una fotografía desde Streamlit y generar posteriormente un reporte PDF del vendedor. El reporte se generó correctamente incluyendo la fotografía.
+
+Este hito confirma el flujo:
+
+```text
+Administrar Vendedores
+        ↓
+📷 Fotografías
+        ↓
+AdminModelo
+        ↓
+vendedores_activos.json + archivo de imagen
+        ↓
+ExcelesModelo
+        ↓
+generar_pdf_reporte()
+        ↓
+PDF con fotografía del vendedor
+```
+

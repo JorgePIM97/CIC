@@ -3,7 +3,7 @@
 **Proyecto:** CIC — Inteligencia Comercial  
 **Documento:** Roadmap de desarrollo y evolución  
 **Estado:** Activo  
-**Última actualización:** 01/10/2026  
+**Última actualización:** 06/10/2026  
 
 ---
 
@@ -148,6 +148,8 @@ Los reportes integran información de ventas y movilidad, además de indicadores
 
 Durante septiembre de 2026 se realizaron cambios verificables mediante Git relacionados con la actualización del reporte y sus elementos visuales.
 
+El 06/10/2026 se integró la fotografía administrable del vendedor en la primera página del reporte, utilizando `canvas` para conservar la distribución existente del documento.
+
 **Estado:** Implementado / evolución activa.
 
 ---
@@ -160,7 +162,8 @@ El proyecto actual contiene componentes relacionados con:
 - usuarios;
 - administración;
 - navegación;
-- permisos o control de acceso.
+- permisos o control de acceso;
+- administración de fotografías de vendedores para reportes PDF.
 
 **Estado:** Implementado / mantenimiento.
 
@@ -559,16 +562,16 @@ Algunas reglas pueden estar implícitas únicamente en el código o en el conoci
 
 Orden recomendado:
 
-1. Crear `dev_log.csv`.
-2. Actualizar `README.md` con la fotografía actual del proyecto.
-3. Crear `docs/architecture.md`.
-4. Crear `docs/database.md`.
-5. Crear `docs/modules.md`.
-6. Crear `docs/reports.md`.
-7. Crear `docs/decisions.md`.
-8. Definir checklist de pruebas de CIC v1.
-9. Construir inventario funcional CIC v1 → CIC v2.
-10. Mantener este roadmap actualizado conforme cambien las prioridades.
+1. Mantener `dev_log.csv` actualizado con cada cambio relevante. — **En curso**
+2. Mantener `README.md` sincronizado con requisitos de instalación y configuración. — **En curso**
+3. `docs/architecture.md`. — **Completado**
+4. `docs/database.md`. — **Completado**
+5. `docs/modules.md`. — **Completado**
+6. `docs/reports.md`. — **Completado**
+7. `docs/decisions.md`. — **Completado**
+8. Definir checklist de pruebas de CIC v1. — **Pendiente**
+9. Construir inventario funcional CIC v1 → CIC v2. — **Pendiente**
+10. Continuar la evolución controlada del reporte PDF y registrar cada cambio en documentación y Git. — **En curso**
 
 ---
 

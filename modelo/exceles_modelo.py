@@ -32,6 +32,7 @@ from .kilometraje_modelo import KilometrajeModelo
 from .presupuesto_modelo import PresupuestoModelo
 import tempfile
 import shutil
+from .admin.admin_modelo import AdminModelo
 
 load_dotenv()
 
@@ -68,6 +69,7 @@ class ExcelesModelo:
         self.resumen_movilidad = ResumenMovilidadModelo()
         self.kilometraje_modelo = KilometrajeModelo()
         self.presupuesto_modelo = PresupuestoModelo()
+        self.admin_modelo = AdminModelo()
         
         # Mapeo de columnas Excel a columnas de base de datos
         self.mapeo_columnas = {
@@ -1834,6 +1836,34 @@ class ExcelesModelo:
         # --------------------------------------------------
         # Borde, logotipo y marca de agua
         # --------------------------------------------------
+
+        # --------------------------------------------------
+        # Fotografía del vendedor
+        # --------------------------------------------------
+
+        carpeta_fotos = os.getenv("FOTOS_VENDEDORES")
+
+        # fotos_vendedores = {
+        #     "ALFONSO GASCA": "alfonso_gasca.jpeg",
+        #     "CESAR VALDES": "cesar_valdes.jpeg",
+        #     "JAVIER IBARROLA": "javier_ibarrola.jpeg",
+        #     "JORGE MARTINEZ": "jorge_martinez.jpeg",
+        # }
+
+        # foto_vendedor_path = None
+
+        foto_vendedor_path = self.admin_modelo.obtener_foto_vendedor(vendedor)
+
+        # if carpeta_fotos:
+        #     nombre_normalizado = vendedor.strip().upper()
+        #     archivo_foto = fotos_vendedores.get(nombre_normalizado)
+
+        #     if archivo_foto:
+        #         ruta_foto = os.path.join(carpeta_fotos, archivo_foto)
+
+        #         if os.path.exists(ruta_foto):
+        #             foto_vendedor_path = ruta_foto
+
         def agregar_borde(canvas, doc):
             canvas.saveState()
 
@@ -1995,7 +2025,35 @@ class ExcelesModelo:
 
             # except Exception as e:
             #     print("Error al insertar marca de agua:", e)
+            # --------------------------------------------------
+            # FOTO DEL VENDEDOR
+            # Parte superior derecha
+            # --------------------------------------------------
 
+            if canvas.getPageNumber() == 1 and foto_vendedor_path:
+                try:
+
+                    FOTO_W = 1.2 * inch
+                    FOTO_H = 1.2 * inch
+
+                    margen_derecho_foto = 0.55 * inch
+                    margen_superior_foto = 0.58 * inch
+
+                    x_foto = PAGE[0] - FOTO_W - margen_derecho_foto
+                    y_foto = PAGE[1] - FOTO_H - margen_superior_foto
+
+                    canvas.drawImage(
+                        foto_vendedor_path,
+                        x_foto,
+                        y_foto,
+                        width=FOTO_W,
+                        height=FOTO_H,
+                        preserveAspectRatio=True,
+                        mask='auto'
+                    )
+
+                except Exception as e:
+                    print(f"Error al insertar foto del vendedor {vendedor}: {e}")
             canvas.restoreState()
         
 

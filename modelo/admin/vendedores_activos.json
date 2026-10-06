@@ -31,5 +31,11 @@
     "ALFONSO GASCA OROZCO",
     "CESAR VALDES ZUÑIGA",
     "Javier Ibarrola"
-  ]
+  ],
+  "fotos_vendedores": {
+    "Jorge Martinez": "jorge_martinez.jpeg",
+    "Cesar Valdes": "cesar_valdes.jpeg",
+    "Alfonso Gasca": "alfonso_gasca.jpeg",
+    "Javier Ibarrola": "javier_ibarrola.jpeg"
+  }
 }

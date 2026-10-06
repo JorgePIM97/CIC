@@ -133,9 +133,13 @@ Registro y análisis de información de movilidad para complementar los indicado
 
 Generación de reportes por vendedor y periodo con información de ventas, metas, movilidad y otros indicadores disponibles.
 
+El reporte de seguimiento estratégico puede incorporar la **fotografía del vendedor** en la primera página. La fotografía se obtiene desde el módulo administrativo y se dibuja directamente sobre el `canvas` de ReportLab, evitando modificar los márgenes y la distribución de las tablas del reporte.
+
 ### Administración
 
 Funciones relacionadas con usuarios, autenticación, navegación y administración de la aplicación.
+
+El módulo **Administrar Vendedores** incluye una pestaña `📷 Fotografías` para registrar, visualizar, reemplazar y eliminar la fotografía asociada a cada vendedor. La relación vendedor → archivo se conserva en `modelo/admin/vendedores_activos.json`, mientras que las imágenes se almacenan en la carpeta configurada mediante `FOTOS_VENDEDORES`.
 
 ---
 
@@ -340,11 +344,20 @@ LOGO_PDF
 ENCABEZADO_GRIS
 ENCABEZADO_ROJO
 PIE_ROJO
+FOTOS_VENDEDORES
 CARPETA_REPORTES
 CARPETA_DESTINO
 ```
 
 Por este motivo, una instalación nueva debe validar estas rutas antes de probar la generación de reportes.
+
+`FOTOS_VENDEDORES` debe apuntar a la carpeta donde CIC almacenará las fotografías administradas desde Streamlit. Ejemplo:
+
+```env
+FOTOS_VENDEDORES=C:\Users\Administrador\Documents\ReportesCIC\FotoVendedores
+```
+
+El usuario de Windows que ejecute CIC debe disponer de permisos de **lectura, escritura y modificación** sobre esa carpeta, ya que la aplicación crea, reemplaza y elimina archivos de imagen.
 
 ---
 
